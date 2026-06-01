@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>戦国武将の最期クイズ</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      background: linear-gradient(135deg, #1f1308, #4b1f12);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .game {
+      width: 100%;
+      max-width: 760px;
+      background: rgba(0,0,0,0.55);
+      border: 2px solid #c99a45;
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffd37a;
+      margin-bottom: 10px;
+    }
+
+    .sub {
+      text-align: center;
+      color: #ddd;
+      margin-bottom: 22px;
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      color: #ffd37a;
+      font-weight: bold;
+    }
+
+    .question {
+      font-size: 1.35rem;
+      line-height: 1.7;
+      background: rgba(255,255,255,0.08);
+      padding: 20px;
+      border-radius: 14px;
+      margin-bottom: 22px;
+    }
+
+    .choices {
+      display: grid;
+      gap: 12px;
+    }
+
+    button {
+      font-size: 1rem;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background: #f5d08a;
+      color: #241407;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      background: #ffe1a6;
+    }
+
+    button.correct {
+      background: #43c463;
+      color: #fff;
+    }
+
+    button.wrong {
+      background: #d94b4b;
+      color: #fff;
+    }
+
+    .result {
+      margin-top: 18px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      min-height: 40px;
+      color: #fff;
+    }
+
+    .explain {
+      margin-top: 8px;
+      color: #ddd;
+      line-height: 1.6;
+      font-weight: normal;
+    }
+
+    .restart {
+      margin-top: 20px;
+      width: 100%;
+      background: #c99a45;
+      color: #fff;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="game">
+  <h1>戦国武将の最期クイズ</h1>
+  <div class="sub">誰が、どんな最期を迎えた？</div>
+
+  <div class="status">
+    <div id="count">1 / 10</div>
+    <div id="score">正解 0</div>
+  </div>
+
+  <div id="question" class="question"></div>
+  <div id="choices" class="choices"></div>
+  <div id="result" class="result"></div>
+
+  <button id="restart" class="restart" onclick="restartGame()">もう一度遊ぶ</button>
+</div>
+
+<script>
+const quizData = [
+  {
+    q: "本能寺の変で明智光秀に襲撃され、「是非に及ばず」と言ったとされる武将は？",
+    choices: ["織田信長", "豊臣秀吉", "徳川家康", "武田信玄"],
+    answer: "織田信長",
+    explain: "織田信長は1582年、本能寺の変で自害したとされています。"
+  },
+  {
+    q: "山崎の戦いで敗れた後、落ち武者狩りに遭って命を落としたとされる武将は？",
+    choices: ["明智光秀", "柴田勝家", "石田三成", "今川義元"],
+    answer: "明智光秀",
+    explain: "明智光秀は本能寺の変の後、山崎の戦いで敗れ、逃走中に討たれたとされています。"
+  },
+  {
+    q: "関ヶ原の戦いで敗れた後、京都の六条河原で処刑された武将は？",
+    choices: ["石田三成", "真田幸村", "前田利家", "黒田官兵衛"],
+    answer: "石田三成",
+    explain: "石田三成は関ヶ原の戦い後に捕らえられ、処刑されました。"
+  },
+  {
+    q: "桶狭間の戦いで織田信長に急襲され、討ち取られた武将は？",
+    choices: ["今川義元", "北条氏康", "上杉謙信", "毛利元就"],
+    answer: "今川義元",
+    explain: "今川義元は1560年、桶狭間の戦いで討ち取られました。"
+  },
+  {
+    q: "賤ヶ岳の戦いで敗れ、北ノ庄城で妻のお市の方とともに自害した武将は？",
+    choices: ["柴田勝家", "丹羽長秀", "佐久間信盛", "滝川一益"],
+    answer: "柴田勝家",
+    explain: "柴田勝家は羽柴秀吉に敗れ、北ノ庄城で自害しました。"
+  },
+  {
+    q: "大坂夏の陣で徳川軍に突撃し、戦死したとされる武将は？",
+    choices: ["真田幸村", "加藤清正", "福島正則", "浅野長政"],
+    answer: "真田幸村",
+    explain: "真田幸村は大坂夏の陣で徳川家康の本陣に迫る活躍を見せ、戦死しました。"
+  },
+  {
+    q: "長篠の戦いで織田・徳川連合軍に敗れ、多くの重臣を失った後、後年に天目山で自害した武将は？",
+    choices: ["武田勝頼", "武田信玄", "山県昌景", "馬場信春"],
+    answer: "武田勝頼",
+    explain: "武田勝頼は天目山の戦いで追い詰められ、自害しました。"
+  },
+  {
+    q: "病に倒れ、上洛を目前にして亡くなったとされる甲斐の虎は？",
+    choices: ["武田信玄", "上杉謙信", "北条氏康", "斎藤道三"],
+    answer: "武田信玄",
+    explain: "武田信玄は西上作戦の途中で病死したとされています。"
+  },
+  {
+    q: "厠で倒れた、または急病で亡くなったと伝わる越後の龍は？",
+    choices: ["上杉謙信", "毛利元就", "尼子経久", "龍造寺隆信"],
+    answer: "上杉謙信",
+    explain: "上杉謙信は急死しました。死因については脳卒中など諸説あります。"
+  },
+  {
+    q: "耳川の戦い後に勢力を失い、晩年は流浪の身となった九州のキリシタン大名は？",
+    choices: ["大友宗麟", "島津義久", "龍造寺隆信", "立花宗茂"],
+    answer: "大友宗麟",
+    explain: "大友宗麟は晩年、豊臣秀吉に援助を求めるなど苦しい状況に置かれました。"
+  },
+  {
+    q: "本能寺の変の際、二条御所で奮戦して討死した織田信長の嫡男は？",
+    choices: ["織田信忠", "織田信雄", "織田信孝", "織田秀信"],
+    answer: "織田信忠",
+    explain: "織田信忠は明智軍と戦った後、自害したとされています。"
+  },
+  {
+    q: "関ヶ原後に改易され、晩年は出家して亡くなった豊臣政権の五大老の一人は？",
+    choices: ["宇喜多秀家", "前田利家", "小早川隆景", "上杉景勝"],
+    answer: "宇喜多秀家",
+    explain: "宇喜多秀家は八丈島へ流され、長い流人生活を送りました。"
+  },
+  {
+    q: "九州の沖田畷の戦いで島津・有馬連合軍に討ち取られた武将は？",
+    choices: ["龍造寺隆信", "大友義統", "島津義弘", "鍋島直茂"],
+    answer: "龍造寺隆信",
+    explain: "龍造寺隆信は沖田畷の戦いで討死しました。"
+  },
+  {
+    q: "豊臣秀吉の死後、五大老筆頭として豊臣政権を支えたが、関ヶ原前に病死した武将は？",
+    choices: ["前田利家", "毛利輝元", "上杉景勝", "徳川家康"],
+    answer: "前田利家",
+    explain: "前田利家の死後、徳川家康の動きが強まりました。"
+  },
+  {
+    q: "関ヶ原で西軍を裏切ったことで有名だが、若くして病死した武将は？",
+    choices: ["小早川秀秋", "島津豊久", "大谷吉継", "平塚為広"],
+    answer: "小早川秀秋",
+    explain: "小早川秀秋は関ヶ原後、まもなく若くして亡くなりました。"
+  },
+  {
+    q: "関ヶ原で敗れ、自害した義に厚い武将。ハンセン病を患っていたとも伝わる人物は？",
+    choices: ["大谷吉継", "島左近", "直江兼続", "吉川広家"],
+    answer: "大谷吉継",
+    explain: "大谷吉継は関ヶ原で西軍として戦い、自害しました。"
+  },
+  {
+    q: "本能寺の変後、中国大返しを行い天下人へ進んだが、最後は伏見城で病死した人物は？",
+    choices: ["豊臣秀吉", "徳川家康", "織田信長", "明智光秀"],
+    answer: "豊臣秀吉",
+    explain: "豊臣秀吉は1598年、伏見城で亡くなりました。"
+  },
+  {
+    q: "江戸幕府を開いたが、最後は駿府城で病死した人物は？",
+    choices: ["徳川家康", "徳川秀忠", "豊臣秀頼", "松永久秀"],
+    answer: "徳川家康",
+    explain: "徳川家康は1616年、駿府城で亡くなりました。"
+  },
+  {
+    q: "大坂夏の陣で母・淀殿とともに自害した豊臣家最後の当主は？",
+    choices: ["豊臣秀頼", "豊臣秀次", "豊臣秀長", "木村重成"],
+    answer: "豊臣秀頼",
+    explain: "豊臣秀頼は大坂城落城時に自害しました。"
+  },
+  {
+    q: "信貴山城で織田軍に攻められ、爆死したとも伝わる梟雄は？",
+    choices: ["松永久秀", "斎藤道三", "宇喜多直家", "尼子経久"],
+    answer: "松永久秀",
+    explain: "松永久秀は信貴山城で自害しました。平蜘蛛の茶釜とともに爆死した逸話が有名です。"
+  }
+];
+
+let questions = [];
+let current = 0;
+let score = 0;
+let answered = false;
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function startGame() {
+  questions = shuffle([...quizData]).slice(0, 10);
+  current = 0;
+  score = 0;
+  answered = false;
+  document.getElementById("restart").style.display = "none";
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  const q = questions[current];
+
+  document.getElementById("count").textContent = `${current + 1} / ${questions.length}`;
+  document.getElementById("score").textContent = `正解 ${score}`;
+  document.getElementById("question").textContent = q.q;
+  document.getElementById("result").innerHTML = "";
+
+  const choicesEl = document.getElementById("choices");
+  choicesEl.innerHTML = "";
+
+  shuffle([...q.choices]).forEach(choice => {
+    const btn = document.createElement("button");
+    btn.textContent = choice;
+    btn.onclick = () => checkAnswer(btn, choice);
+    choicesEl.appendChild(btn);
+  });
+}
+
+function checkAnswer(button, choice) {
+  if (answered) return;
+  answered = true;
+
+  const q = questions[current];
+  const buttons = document.querySelectorAll("#choices button");
+
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    if (btn.textContent === q.answer) {
+      btn.classList.add("correct");
+    }
+  });
+
+  if (choice === q.answer) {
+    score++;
+    button.classList.add("correct");
+    document.getElementById("result").innerHTML =
+      `正解！<div class="explain">${q.explain}</div>`;
+  } else {
+    button.classList.add("wrong");
+    document.getElementById("result").innerHTML =
+      `不正解… 正解は「${q.answer}」<div class="explain">${q.explain}</div>`;
+  }
+
+  document.getElementById("score").textContent = `正解 ${score}`;
+
+  setTimeout(() => {
+    current++;
+    if (current < questions.length) {
+      showQuestion();
+    } else {
+      finishGame();
+    }
+  }, 1800);
+}
+
+function finishGame() {
+  document.getElementById("question").textContent =
+    `終了！あなたの得点は ${questions.length}問中 ${score}問正解です。`;
+
+  document.getElementById("choices").innerHTML = "";
+  document.getElementById("result").innerHTML =
+    score >= 8 ? "戦国博士レベル！" :
+    score >= 5 ? "なかなか詳しい！" :
+    "もう一度挑戦してみよう！";
+
+  document.getElementById("restart").style.display = "block";
+}
+
+function restartGame() {
+  startGame();
+}
+
+startGame();
+</script>
+
+</body>
+</html>
