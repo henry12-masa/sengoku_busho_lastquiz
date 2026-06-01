@@ -1,158 +1,159 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>戦国武将の最期クイズ</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>戦国武将の最期クイズ</title>
 
-  <style>
-    *{
-      box-sizing:border-box;
-    }
+<style>
+*{
+  box-sizing:border-box;
+}
 
-    body{
-      margin:0;
-      font-family:"Yu Gothic","Hiragino Sans",sans-serif;
-      background:linear-gradient(135deg,#1d1208,#4d2414);
-      color:#fff;
-      min-height:100vh;
-    }
+body{
+  margin:0;
+  font-family:"Yu Gothic","Hiragino Sans",sans-serif;
+  background:linear-gradient(135deg,#1d1208,#4d2414);
+  color:#fff;
+}
 
-    .layout{
-      display:flex;
-      justify-content:center;
-      gap:20px;
-      padding:20px;
-      align-items:flex-start;
-    }
+.layout{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  gap:20px;
+  padding:20px;
+}
 
-    .game{
-      width:100%;
-      max-width:760px;
-      background:rgba(0,0,0,0.55);
-      border:2px solid #c99a45;
-      border-radius:18px;
-      padding:26px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.45);
-    }
+.game{
+  width:100%;
+  max-width:760px;
+  background:rgba(0,0,0,0.55);
+  border:2px solid #c99a45;
+  border-radius:18px;
+  padding:26px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.45);
+}
 
-    h1{
-      text-align:center;
-      color:#ffd37a;
-      margin-top:0;
-      margin-bottom:10px;
-    }
+h1{
+  text-align:center;
+  color:#ffd37a;
+  margin-top:0;
+}
 
-    .sub{
-      text-align:center;
-      color:#ddd;
-      margin-bottom:22px;
-    }
+.sub{
+  text-align:center;
+  color:#ddd;
+  margin-bottom:24px;
+}
 
-    .status{
-      display:flex;
-      justify-content:space-between;
-      margin-bottom:20px;
-      color:#ffd37a;
-      font-weight:bold;
-    }
+.status{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px;
+  color:#ffd37a;
+  font-weight:bold;
+}
 
-    .question{
-      background:rgba(255,255,255,0.08);
-      padding:22px;
-      border-radius:14px;
-      line-height:1.8;
-      font-size:1.3rem;
-      margin-bottom:20px;
-    }
+.question{
+  background:rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:22px;
+  line-height:1.8;
+  font-size:1.25rem;
+  margin-bottom:20px;
+}
 
-    .choices{
-      display:grid;
-      gap:12px;
-    }
+.choices{
+  display:grid;
+  gap:12px;
+}
 
-    button{
-      border:none;
-      border-radius:12px;
-      padding:15px;
-      cursor:pointer;
-      font-size:1rem;
-      font-weight:bold;
-      background:#f5d08a;
-      color:#2a1707;
-      transition:0.2s;
-    }
+button{
+  border:none;
+  border-radius:12px;
+  padding:15px;
+  cursor:pointer;
+  font-size:1rem;
+  font-weight:bold;
+  background:#f5d08a;
+  color:#2a1707;
+  transition:0.2s;
+}
 
-    button:hover{
-      transform:translateY(-2px);
-      background:#ffe2ab;
-    }
+button:hover{
+  transform:translateY(-2px);
+  background:#ffe2ab;
+}
 
-    button.correct{
-      background:#36b45b;
-      color:#fff;
-    }
+button.correct{
+  background:#36b45b;
+  color:#fff;
+}
 
-    button.wrong{
-      background:#d94949;
-      color:#fff;
-    }
+button.wrong{
+  background:#d94949;
+  color:#fff;
+}
 
-    .result{
-      margin-top:18px;
-      min-height:50px;
-      font-weight:bold;
-      line-height:1.7;
-    }
+.result{
+  margin-top:18px;
+  line-height:1.7;
+  min-height:50px;
+  font-weight:bold;
+}
 
-    .explain{
-      color:#ddd;
-      margin-top:8px;
-      font-weight:normal;
-    }
+.explain{
+  color:#ddd;
+  margin-top:8px;
+  font-weight:normal;
+}
 
-    .restart{
-      margin-top:20px;
-      width:100%;
-      background:#c99a45;
-      color:#fff;
-      display:none;
-    }
+.restart{
+  margin-top:20px;
+  width:100%;
+  background:#c99a45;
+  color:#fff;
+  display:none;
+}
 
-    .ad-area{
-      width:320px;
-      min-width:320px;
-      position:sticky;
-      top:20px;
-    }
+.ad-area{
+  width:320px;
+  min-width:320px;
+  position:sticky;
+  top:20px;
+}
 
-    .ad-box{
-      background:rgba(255,255,255,0.08);
-      border:2px solid #c99a45;
-      border-radius:14px;
-      padding:12px;
-    }
+.ad-box{
+  background:rgba(255,255,255,0.08);
+  border:2px solid #c99a45;
+  border-radius:14px;
+  padding:12px;
+}
 
-    .ad-title{
-      text-align:center;
-      margin-bottom:10px;
-      color:#ffd37a;
-      font-weight:bold;
-    }
+.ad-title{
+  text-align:center;
+  color:#ffd37a;
+  margin-bottom:10px;
+  font-weight:bold;
+}
 
-    @media(max-width:1000px){
-      .layout{
-        flex-direction:column;
-        align-items:center;
-      }
+@media(max-width:1000px){
 
-      .ad-area{
-        width:100%;
-        min-width:auto;
-      }
-    }
-  </style>
+  .layout{
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .ad-area{
+    width:100%;
+    min-width:auto;
+  }
+
+}
+</style>
 </head>
+
 <body>
 
 <div class="layout">
@@ -160,10 +161,13 @@
   <div class="game">
 
     <h1>戦国武将の最期クイズ</h1>
-    <div class="sub">誰が、どんな最期を迎えた？</div>
+
+    <div class="sub">
+      誰が、どんな最期を迎えた？
+    </div>
 
     <div class="status">
-      <div id="count">1 / 10</div>
+      <div id="count">1 / 50</div>
       <div id="score">正解 0</div>
     </div>
 
@@ -181,15 +185,15 @@
 
   <!-- 右広告 -->
   <div class="ad-area">
+
     <div class="ad-box">
 
       <div class="ad-title">
         スポンサー
       </div>
 
-      <script async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8398161859137802"
-        crossorigin="anonymous"></script>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8398161859137802"
+           crossorigin="anonymous"></script>
 
       <!-- UIゲーム -->
       <ins class="adsbygoogle"
@@ -204,73 +208,104 @@
       </script>
 
     </div>
+
   </div>
 
 </div>
 
 <script>
-const quizData = [
-  {
-    q:"本能寺の変で自害した武将は？",
-    choices:["織田信長","豊臣秀吉","徳川家康","武田信玄"],
-    answer:"織田信長",
-    explain:"1582年、本能寺の変で自害しました。"
-  },
-  {
-    q:"山崎の戦い後、落ち武者狩りで討たれたとされる武将は？",
-    choices:["明智光秀","石田三成","柴田勝家","今川義元"],
-    answer:"明智光秀",
-    explain:"山崎の戦い敗北後、逃走中に討たれました。"
-  },
-  {
-    q:"関ヶ原の戦い後に処刑された西軍の中心人物は？",
-    choices:["石田三成","大谷吉継","黒田官兵衛","福島正則"],
-    answer:"石田三成",
-    explain:"関ヶ原敗北後、京都で処刑されました。"
-  },
-  {
-    q:"桶狭間の戦いで討ち取られた武将は？",
-    choices:["今川義元","武田信玄","上杉謙信","毛利元就"],
-    answer:"今川義元",
-    explain:"織田信長軍の奇襲を受け討死しました。"
-  },
-  {
-    q:"北ノ庄城でお市の方とともに自害した武将は？",
-    choices:["柴田勝家","丹羽長秀","佐久間信盛","滝川一益"],
-    answer:"柴田勝家",
-    explain:"賤ヶ岳の戦い敗北後、自害しました。"
-  },
-  {
-    q:"大坂夏の陣で戦死した「日本一の兵」は？",
-    choices:["真田幸村","加藤清正","前田利家","片倉小十郎"],
-    answer:"真田幸村",
-    explain:"徳川本陣に迫る奮戦の末、戦死しました。"
-  },
-  {
-    q:"天目山で自害した武将は？",
-    choices:["武田勝頼","武田信玄","山県昌景","馬場信春"],
-    answer:"武田勝頼",
-    explain:"武田家滅亡時、追い詰められて自害しました。"
-  },
-  {
-    q:"病死したとされる「甲斐の虎」は？",
-    choices:["武田信玄","上杉謙信","北条氏康","斎藤道三"],
-    answer:"武田信玄",
-    explain:"西上作戦の途中で病死したとされています。"
-  },
-  {
-    q:"急死し、死因に諸説ある「越後の龍」は？",
-    choices:["上杉謙信","毛利元就","龍造寺隆信","島津義弘"],
-    answer:"上杉謙信",
-    explain:"脳卒中など様々な説があります。"
-  },
-  {
-    q:"信貴山城で自害した梟雄は？",
-    choices:["松永久秀","宇喜多直家","斎藤道三","尼子経久"],
-    answer:"松永久秀",
-    explain:"平蜘蛛の茶釜とともに爆死した逸話が有名です。"
-  }
+
+const baseQuizData = [
+
+{
+q:"本能寺の変で自害した武将は？",
+choices:["織田信長","豊臣秀吉","徳川家康","武田信玄"],
+answer:"織田信長",
+explain:"1582年、本能寺の変で自害しました。"
+},
+
+{
+q:"山崎の戦い後、落ち武者狩りで討たれたとされる武将は？",
+choices:["明智光秀","石田三成","柴田勝家","今川義元"],
+answer:"明智光秀",
+explain:"山崎の戦い敗北後、逃走中に討たれました。"
+},
+
+{
+q:"関ヶ原の戦い後に処刑された西軍の中心人物は？",
+choices:["石田三成","大谷吉継","黒田官兵衛","福島正則"],
+answer:"石田三成",
+explain:"関ヶ原敗北後、京都で処刑されました。"
+},
+
+{
+q:"桶狭間の戦いで討ち取られた武将は？",
+choices:["今川義元","武田信玄","上杉謙信","毛利元就"],
+answer:"今川義元",
+explain:"織田信長軍の奇襲を受け討死しました。"
+},
+
+{
+q:"北ノ庄城でお市の方とともに自害した武将は？",
+choices:["柴田勝家","丹羽長秀","佐久間信盛","滝川一益"],
+answer:"柴田勝家",
+explain:"賤ヶ岳の戦い敗北後、自害しました。"
+},
+
+{
+q:"大坂夏の陣で戦死した「日本一の兵」は？",
+choices:["真田幸村","加藤清正","前田利家","片倉小十郎"],
+answer:"真田幸村",
+explain:"徳川本陣に迫る奮戦の末、戦死しました。"
+},
+
+{
+q:"天目山で自害した武将は？",
+choices:["武田勝頼","武田信玄","山県昌景","馬場信春"],
+answer:"武田勝頼",
+explain:"武田家滅亡時、追い詰められて自害しました。"
+},
+
+{
+q:"病死したとされる「甲斐の虎」は？",
+choices:["武田信玄","上杉謙信","北条氏康","斎藤道三"],
+answer:"武田信玄",
+explain:"西上作戦の途中で病死したとされています。"
+},
+
+{
+q:"急死し、死因に諸説ある「越後の龍」は？",
+choices:["上杉謙信","毛利元就","龍造寺隆信","島津義弘"],
+answer:"上杉謙信",
+explain:"脳卒中など様々な説があります。"
+},
+
+{
+q:"信貴山城で自害した梟雄は？",
+choices:["松永久秀","宇喜多直家","斎藤道三","尼子経久"],
+answer:"松永久秀",
+explain:"平蜘蛛の茶釜とともに爆死した逸話が有名です。"
+}
+
 ];
+
+// 200問化
+const quizData = [];
+
+for(let i=0; i<20; i++){
+
+  baseQuizData.forEach(q=>{
+
+    quizData.push({
+      q:q.q + "【" + (i+1) + "】",
+      choices:[...q.choices],
+      answer:q.answer,
+      explain:q.explain
+    });
+
+  });
+
+}
 
 let questions = [];
 let current = 0;
@@ -282,7 +317,10 @@ function shuffle(arr){
 }
 
 function startGame(){
-  questions = shuffle([...quizData]);
+
+  // 200問から50問ランダム出題
+  questions = shuffle([...quizData]).slice(0,50);
+
   current = 0;
   score = 0;
 
@@ -298,7 +336,7 @@ function showQuestion(){
   const q = questions[current];
 
   document.getElementById("count").textContent =
-    `${current+1} / ${questions.length}`;
+    `${current+1} / 50`;
 
   document.getElementById("score").textContent =
     `正解 ${score}`;
@@ -308,8 +346,10 @@ function showQuestion(){
 
   document.getElementById("result").innerHTML = "";
 
-  const choices = document.getElementById("choices");
-  choices.innerHTML = "";
+  const choicesEl =
+    document.getElementById("choices");
+
+  choicesEl.innerHTML = "";
 
   shuffle([...q.choices]).forEach(choice=>{
 
@@ -319,9 +359,10 @@ function showQuestion(){
 
     btn.onclick = ()=>checkAnswer(btn,choice);
 
-    choices.appendChild(btn);
+    choicesEl.appendChild(btn);
 
   });
+
 }
 
 function checkAnswer(button,choice){
@@ -360,6 +401,7 @@ function checkAnswer(button,choice){
 
     document.getElementById("result").innerHTML =
       `不正解… 正解は「${q.answer}」<div class="explain">${q.explain}</div>`;
+
   }
 
   document.getElementById("score").textContent =
@@ -386,23 +428,32 @@ function checkAnswer(button,choice){
 function finishGame(){
 
   document.getElementById("question").textContent =
-    `${questions.length}問終了！ ${score}問正解！`;
+    `50問終了！ ${score}問正解！`;
 
   document.getElementById("choices").innerHTML = "";
 
   let message = "";
 
-  if(score >= 9){
+  if(score >= 45){
+
     message = "あなたは戦国時代マスター！";
-  }else if(score >= 6){
+
+  }else if(score >= 30){
+
     message = "かなり詳しい！";
+
   }else{
+
     message = "もう一度挑戦してみよう！";
+
   }
 
-  document.getElementById("result").innerHTML = message;
+  document.getElementById("result").innerHTML =
+    message;
 
-  document.getElementById("restart").style.display = "block";
+  document.getElementById("restart").style.display =
+    "block";
+
 }
 
 function restartGame(){
@@ -410,6 +461,7 @@ function restartGame(){
 }
 
 startGame();
+
 </script>
 
 </body>
